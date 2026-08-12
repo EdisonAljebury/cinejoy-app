@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -13,21 +13,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
 
       - name: Install Dependencies
         run: |
           npm install @capacitor/core @capacitor/cli @capacitor/ios
 
-      - name: Initialize Capacitor & Add iOS
+      - name: Initialize Capacitor & Sync iOS
         run: |
           mkdir -p www
-          npx cap add ios
+          npx cap add ios || true
+          npx cap sync ios
 
       - name: Build Xcode Project (Unsigned IPA)
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath build archive -archivePath build/App.xcarchive
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath build archive -archivePath build/App.xcarchive CODE_SIGNING_ALLOWED=NO
           mkdir -p build/Payload
           cp -r build/App.xcarchive/Products/Applications/App.app build/Payload/
           cd build
