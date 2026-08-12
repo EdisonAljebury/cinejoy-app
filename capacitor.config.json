@@ -1,0 +1,14 @@
+{
+  "appId": "com.cinejoy.app",
+  "appName": "CineJoy",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://cinejoy.to/",
+    "cleartext": true
+  },
+  "ios": {
+    "allowsInlineMediaPlayback": true,
+    "scrollEnabled": true
+  }
+}
